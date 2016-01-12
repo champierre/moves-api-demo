@@ -3,6 +3,11 @@ require 'oauth2'
 require 'json'
 require 'date'
 
+if ENV['RACK_ENV'] != 'production'
+  require 'dotenv'
+  Dotenv.load
+end
+
 # access tokens will be stored in the session
 enable :sessions
 set    :session_secret, 'super secret'
@@ -69,5 +74,3 @@ get '/moves/recent' do
   }
   erb :recent, :layout => !request.xhr?
 end
-
-
