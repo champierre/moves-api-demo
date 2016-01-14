@@ -14,7 +14,7 @@ set    :session_secret, 'super secret'
 
 helpers do
   def format_date(date_str)
-    Date.parse(date_str).strftime("%B %d, %Y")
+    Date.parse(date_str).strftime("%-m/%-d(%a)")
   end
 end
 
@@ -31,7 +31,7 @@ get "/" do
   if !session[:access_token].nil?
     erb :index
   else
-    @moves_authorize_uri = client.auth_code.authorize_url(:redirect_uri => redirect_uri, :scope => 'activity')
+    @moves_authorize_uri = client.auth_code.authorize_url(:redirect_uri => redirect_uri, :scope => 'activity location')
     erb :signin
   end
 end
@@ -73,4 +73,35 @@ get '/moves/recent' do
     end
   }
   erb :recent, :layout => !request.xhr?
+end
+
+get '/moves/workdays' do
+  start_date = Date::new((Date.today << 1).year, (Date.today << 1).month, 1)
+  end_date = (start_date >> 1) - 1
+  from = start_date.strftime("%Y%m%d")
+  to = end_date.strftime("%Y%m%d")
+  json = access_token.get("/api/1.1/user/places/daily?from=#{from}&to=#{to}").parsed
+
+  @workdays = []
+  @days_data = []
+  json.each do |day|
+    day_data = {}
+    date = format_date(day["date"])
+    day_data[:date] = date
+    unless day["segments"].nil?
+      segments = day["segments"].find_all { |s| s["type"] == 'place' }
+      day_data[:segments] = []
+      segments.each do |segment|
+        if (place = segment["place"]["name"]) == (ENV['WORKING_PLACE_NAME'] || 'Office')
+          day_data[:segments] << "<strong>#{place}</strong>"
+          @workdays << date unless @workdays.include?(date)
+        else
+          day_data[:segments] << place
+        end
+      end
+    end
+    @days_data << day_data
+  end
+
+  erb :workdays, :layout => !request.xhr?
 end

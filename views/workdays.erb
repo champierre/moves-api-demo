@@ -1,0 +1,20 @@
+<div data-role="page">
+  <div data-role="header"><h1>Moves API Demo - Workdays</h1></div>
+  <div data-role="content">
+    <p>
+      Workdays: <strong><%= "#{@workdays.count} days" %></strong>
+    </p>
+    <textarea cols="40" rows="10"><%= @workdays.join(', ') %></textarea>
+
+    <ul data-role="listview" data-inset="true">
+      <% @days_data.each do |day_data| %>
+        <li data-role="list-divider">
+          <%= day_data[:date] %>
+        </li>
+        <li>
+          <%= day_data[:segments].join(' ') %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
