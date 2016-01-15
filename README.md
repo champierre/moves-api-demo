@@ -1,3 +1,5 @@
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 This is a sample app that demostrates how to connect to [Moves](https://moves-app.com).
 
 Make sure you have [Bundler](http://gembundler.com/) installed. Then install the dependencies with `bundle install` on the command line.

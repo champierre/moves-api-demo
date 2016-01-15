@@ -1,0 +1,6 @@
+{
+  "name": "Moves API Demo",
+  "description": "This is a sample app that demostrates how to connect to Moves.",
+  "repository": "https://github.com/champierre/moves-api-demo",
+  "keywords": ["ruby", "sinatra", "moves"]
+}
