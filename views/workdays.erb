@@ -6,6 +6,12 @@
     </p>
     <textarea cols="40" rows="10"><%= @workdays.join(', ') %></textarea>
 
+    <form method="post" action="/emails">
+      <input type="hidden" name="workdays_count" value="<%= @workdays.count %>" />      
+      <input type="hidden" name="workdays" value="<%= @workdays.join(', ') %>" />
+      <input type="submit" value="Email" />
+    </form>
+
     <ul data-role="listview" data-inset="true">
       <% @days_data.each do |day_data| %>
         <li data-role="list-divider">

@@ -2,6 +2,19 @@ require 'sinatra'
 require 'oauth2'
 require 'json'
 require 'date'
+require 'mail'
+
+Mail.defaults do
+  delivery_method :smtp, {
+    :address => 'smtp.sendgrid.net',
+    :port => '587',
+    :domain => 'heroku.com',
+    :user_name => ENV['SENDGRID_USERNAME'],
+    :password => ENV['SENDGRID_PASSWORD'],
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
+end
 
 if ENV['RACK_ENV'] != 'production'
   require 'dotenv'
@@ -104,4 +117,14 @@ get '/moves/workdays' do
   end
 
   erb :workdays, :layout => !request.xhr?
+end
+
+post '/emails' do
+  Mail.new(
+    to: ENV['EMAIL_TO'],
+    from: ENV['EMAIL_TO'],
+    subject: "Workdays: #{@params[:workdays_count]} days",
+    body: @params[:workdays]
+  ).deliver!
+  erb :sent
 end

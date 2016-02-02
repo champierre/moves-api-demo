@@ -5,3 +5,4 @@ gem 'oauth2'
 gem 'json'
 
 gem 'dotenv'
+gem 'mail'

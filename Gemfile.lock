@@ -8,6 +8,9 @@ GEM
     json (1.8.3)
     jwt (0.1.7)
       multi_json (>= 1.5)
+    mail (2.6.3)
+      mime-types (>= 1.16, < 3)
+    mime-types (2.99)
     multi_json (1.5.0)
     multi_xml (0.5.1)
     multipart-post (1.1.5)
@@ -33,6 +36,7 @@ PLATFORMS
 DEPENDENCIES
   dotenv
   json
+  mail
   oauth2
   sinatra
 
